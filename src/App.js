@@ -5,7 +5,6 @@ import VoiceControl from "./voiceControl";
 const App = () => {
     return (
         <>
-
             <VoiceControl/>
         </>
     );
