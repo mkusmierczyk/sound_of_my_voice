@@ -1,51 +1,69 @@
 import React, {useEffect, useState} from 'react';
-import {Redirect} from 'react-router-dom'
 import {useSpeechRecognition} from 'react-speech-kit';
 import {useSpeechSynthesis} from 'react-speech-kit';
-
+import TextToSpeech from "./textToSpeech";
 
 const VoiceControl = () => {
     const [value, setValue] = useState('');
-    const [searchValue, setSearchValue] = useState("")
     const {speak} = useSpeechSynthesis();
+
     const {listen, listening, stop} = useSpeechRecognition({
         onResult: (result) => {
             setValue(result);
         },
     });
+
+    let myRegex = /.*?(?=[\wäöüß]+$)/i;
+
     useEffect(() => {
         if (value === "Grażyna przekaż pozdrowienia dla Asi") {
             const read = () => {
                 speak({text: "Najserdeczniejsze Pozdrowienia z Brzegu Dolnego przesyła Grażyna i Mąż Janusz "})
             }
             read()
-
         }
-        if (value.includes("YouTube") ) {
-            const change = () => {
-                window.location.href = `https://www.youtube.com/results?search_query=${value}`;
+        if (value.includes("YouTube")) {
+            const youtube = () => {
+                speak({text: "Już pokazuje najlepsze dopasowanie "})
+                window.open(`https://www.youtube.com/results?search_query=${value.match(myRegex)}`);
             }
-            change()
+            youtube()
         }
-        if (value.includes("Google") ) {
-            const change = () => {
-                window.location.href = `http://www.google.com/search?q=${value}`;
+        if (value.includes("Google")) {
+            const google = () => {
+                speak({text: "Już pokazuje najlepsze dopasowanie "})
+                window.open(`http://www.google.com/search?q=${value.match(myRegex)}`);
             }
-            change()
+            google()
+        }
+        if (value.includes("mapy")) {
+            const maps = () => {
+                speak({text: "Już pokazuje najlepsze dopasowanie "})
+                window.open(`http://www.google.com/maps?q=${value.match(myRegex)}`);
+            }
+            maps()
+        }
+        if (value.includes("nasłuch")) {
+            stop()
         }
     }, [value])
 
+
+
     return (
         <div>
-      <textarea
-          value={value}
-          onChange={(event) => setValue(event.target.value)}
-      />
-            <button onMouseDown={listen} onMouseUp={stop}>
+            <TextToSpeech value={value}/>
+            <textarea
+                value={value}
+                onChange={(event) => setValue(event.target.value)}
+            />
+            <button onClick={listen}>
+                <span> 🎤 </span>
+            </button>
+            <button onClick={stop}>
                 <span> 🎤 </span>
             </button>
             {listening && <div>Co chcesz powiedzieć ?</div>}
-
         </div>
     );
 }
