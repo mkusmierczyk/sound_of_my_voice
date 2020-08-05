@@ -3,6 +3,7 @@ import {useSpeechRecognition} from 'react-speech-kit';
 import {useSpeechSynthesis} from 'react-speech-kit';
 import TextToSpeech from "./textToSpeech";
 
+
 const VoiceControl = () => {
     const [value, setValue] = useState('');
     const {speak} = useSpeechSynthesis();
@@ -16,9 +17,9 @@ const VoiceControl = () => {
     let myRegex = /.*?(?=[\wäöüß]+$)/i;
 
     useEffect(() => {
-        if (value === "Grażyna przekaż pozdrowienia dla Asi") {
+        if (value === "Grażyna jak się masz") {
             const read = () => {
-                speak({text: "Najserdeczniejsze Pozdrowienia z Brzegu Dolnego przesyła Grażyna i Mąż Janusz "})
+                speak({text: "Dobrze Mateusz Dziekuje za troskę "})
             }
             read()
         }
@@ -48,8 +49,6 @@ const VoiceControl = () => {
         }
     }, [value])
 
-
-
     return (
         <div>
             <TextToSpeech value={value}/>
@@ -64,6 +63,7 @@ const VoiceControl = () => {
                 <span> 🎤 </span>
             </button>
             {listening && <div>Co chcesz powiedzieć ?</div>}
+
         </div>
     );
 }
